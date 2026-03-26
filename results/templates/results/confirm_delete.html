@@ -1,0 +1,30 @@
+{% extends "results/base.html" %}
+
+{% block title %}Delete Result – Exam Result Management{% endblock %}
+{% block page_title %}🗑 Delete Confirmation{% endblock %}
+
+{% block content %}
+
+<div class="confirm-box">
+    <div class="confirm-icon">⚠️</div>
+    <h2>Delete This Result?</h2>
+    <p>
+        You are about to permanently delete the result for<br>
+        <strong style="color:var(--text-primary);">{{ result.student_name }}</strong>
+        (Roll No: {{ result.roll_number }}, {{ result.subject }}).
+        <br><br>This action <strong style="color:#ef4444;">cannot be undone</strong>.
+    </p>
+    <div class="confirm-actions">
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-delete" style="padding:12px 28px;">
+                🗑 Yes, Delete
+            </button>
+        </form>
+        <a href="{% url 'result_list' %}" class="btn btn-secondary" style="padding:12px 28px;">
+            ← Cancel
+        </a>
+    </div>
+</div>
+
+{% endblock %}
