@@ -1,0 +1,109 @@
+{% extends "results/base.html" %}
+
+{% block title %}Dashboard – Exam Result Management{% endblock %}
+{% block page_title %}📊 Result Dashboard{% endblock %}
+{% block nav_list %}active{% endblock %}
+
+{% block content %}
+
+<!-- Stats Row -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon purple">🎓</div>
+        <div>
+            <div class="stat-value">{{ total }}</div>
+            <div class="stat-label">Total Students</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon green">✅</div>
+        <div>
+            <div class="stat-value">{{ passed }}</div>
+            <div class="stat-label">Passed</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon red">❌</div>
+        <div>
+            <div class="stat-value">{{ failed }}</div>
+            <div class="stat-label">Failed</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon cyan">📈</div>
+        <div>
+            <div class="stat-value">{{ avg }}</div>
+            <div class="stat-label">Average Marks</div>
+        </div>
+    </div>
+</div>
+
+<!-- Results Table -->
+<div class="card">
+    <div class="card-header">
+        <h2>All Exam Results</h2>
+        <a href="{% url 'add_result' %}" class="btn btn-primary">➕ Add Result</a>
+    </div>
+    <div class="card-body" style="padding:0;">
+
+        {% if data %}
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Student Name</th>
+                    <th>Roll No.</th>
+                    <th>Subject</th>
+                    <th>Marks</th>
+                    <th>Grade</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in data %}
+                <tr>
+                    <td style="color:var(--text-secondary); font-size:12px;">{{ forloop.counter }}</td>
+                    <td>
+                        <div style="font-weight:600;">{{ i.student_name }}</div>
+                    </td>
+                    <td>
+                        <span style="background:rgba(124,58,237,0.15); color:#a78bfa;
+                              padding:3px 10px; border-radius:6px; font-size:13px; font-weight:600;">
+                            {{ i.roll_number }}
+                        </span>
+                    </td>
+                    <td>{{ i.subject }}</td>
+                    <td>
+                        <div class="marks-cell">
+                            <div class="marks-bar-bg">
+                                <div class="marks-bar-fill" style="width:{{ i.marks }}%;"></div>
+                            </div>
+                            <span class="marks-num">{{ i.marks }}</span>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="grade-badge {{ i.get_grade_color }}">{{ i.grade }}</span>
+                    </td>
+                    <td>
+                        <div class="actions">
+                            <a href="{% url 'edit_result' i.id %}" class="btn btn-edit">✏️ Edit</a>
+                            <a href="{% url 'delete_result' i.id %}" class="btn btn-delete">🗑 Delete</a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">
+            <div class="empty-icon">📭</div>
+            <h3>No results yet</h3>
+            <p>Start by adding your first exam result.</p>
+            <a href="{% url 'add_result' %}" class="btn btn-primary">➕ Add First Result</a>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}
